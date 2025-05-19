@@ -1,0 +1,56 @@
+<mat-card class="login-card" appearance="outlined"
+          style="max-width:400px;margin:0 auto;padding:16px;margin-top:5%">
+  <mat-card-header>
+    <h1 style="margin-left: 40%;margin-bottom: 8%">Log in</h1>
+  </mat-card-header>
+
+  <!-- credentials -->
+  <mat-card-content *ngIf="!show2Fa">
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+      <mat-form-field appearance="outline" style="width:100%;margin-bottom:16px">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" type="email" required />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="width:100%;margin-bottom:16px">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password" required />
+      </mat-form-field>
+
+      <mat-card-actions style="display:flex;justify-content:center;margin-top:16px">
+        <button mat-raised-button color="primary" style="width:100%" type="submit">
+          Login
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+
+  <!-- TOTP code -->
+  <mat-card-content *ngIf="show2Fa">
+    <p style="text-align:center;margin-bottom:16px">
+      Enter the 6-digit code from your authenticator app
+    </p>
+    <form [formGroup]="twoFaForm" (ngSubmit)="submit2Fa()">
+      <mat-form-field appearance="outline" style="width:100%;margin-bottom:16px">
+        <mat-label>6-digit code</mat-label>
+        <input matInput formControlName="code" maxlength="6"
+               autocomplete="one-time-code" required />
+      </mat-form-field>
+
+      <mat-card-actions style="display:flex;justify-content:center;margin-top:16px">
+        <button mat-raised-button color="primary" style="width:100%" type="submit">
+          Verify &amp; Login
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+  <div style="text-align:center;margin-top:16px">
+    <a routerLink="/forgot-password" style="margin-right:16px">Forgot password?</a>
+    <a routerLink="/register">Create an account</a>
+</div>
+  <!-- errorr message -->
+  <div *ngIf="backendError"
+       style="color:#c62828;margin-top:12px;text-align:center">
+    {{ backendError }}
+  </div>
+</mat-card>

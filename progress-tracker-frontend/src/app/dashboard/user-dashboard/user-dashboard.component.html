@@ -1,0 +1,38 @@
+<mat-toolbar>
+  <span style="margin-right: 15px;">
+    <mat-icon>timeline</mat-icon>
+  </span>
+  <span>Progress Tracker</span>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav opened mode="side">
+    <mat-nav-list>
+      <a  mat-list-item [routerLink]="['/user-dashboard','assigned-tasks']">
+        <span>Assigned Tasks</span>
+        <mat-icon>assignment</mat-icon>
+      </a>
+      <a *ngIf="accountService.currentUser?.roles?.includes('Admin') || accountService.currentUser?.roles?.includes('Manager')" mat-list-item [routerLink]="['/user-dashboard','create-task']">
+        <span>Create Task</span>
+        <mat-icon>add_task</mat-icon>
+      </a>
+      <a *ngIf="accountService.currentUser?.roles?.includes('Admin')" mat-list-item [routerLink]="['/user-dashboard','user-management']">
+        <span>User Management</span>
+        <mat-icon>people</mat-icon>
+      </a>
+      <a *ngIf="accountService.currentUser?.roles?.includes('Admin')" mat-list-item [routerLink]="['/user-dashboard','role-management']">
+        <span>Role Management</span>
+        <mat-icon>fingerprint</mat-icon>
+      </a>
+      <a mat-list-item (click)="logout()">
+        <span>Logout</span>
+        <mat-icon>logout</mat-icon>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  
+  <mat-sidenav-content>
+    <!-- The main content area: displays child routes -->
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

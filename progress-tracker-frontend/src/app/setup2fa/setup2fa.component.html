@@ -1,0 +1,33 @@
+<mat-card style="max-width:400px;margin:0 auto;padding:16px;margin-top:5%">
+    <mat-card-title style="text-align:center">Enable 2‑Step Verification</mat-card-title>
+    <mat-card-content>
+      <p style="text-align:center">Scan this QR‑code with Google Authenticator
+         (or any TOTP app), then enter the 6‑digit code.</p>
+  
+      <div style="display:flex;justify-content:center;margin:16px 0">
+        
+        <qrcode *ngIf="qrUri"
+        [qrdata]="qrUri"
+        [width]="200"
+        errorCorrectionLevel="M">
+        </qrcode>
+      </div>
+  
+      <p style="text-align:center;font-family:monospace">{{ sharedKey }}</p>
+  
+      <form [formGroup]="form" (ngSubmit)="confirm()">
+        <mat-form-field appearance="outline" style="width:100%;margin-bottom:16px">
+          <mat-label>6‑digit code</mat-label>
+          <input matInput formControlName="code" maxlength="6" autocomplete="one-time-code" required>
+        </mat-form-field>
+  
+        <button mat-raised-button color="primary" style="width:100%" type="submit">
+          Verify &amp; Finish
+        </button>
+      </form>
+  
+      <div *ngIf="backendErr" style="color:#c62828;text-align:center;margin-top:12px">
+        {{ backendErr }}
+      </div>
+    </mat-card-content>
+  </mat-card>

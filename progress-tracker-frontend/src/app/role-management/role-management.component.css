@@ -1,0 +1,21 @@
+
+::ng-deep .mat-header-cell,
+::ng-deep .mat-cell {
+  padding: 8px 12px;       
+  font-size: 0.9rem;       
+}
+
+
+.action-header, .action-cell {
+  text-align: right;
+}
+
+
+.my-table {
+  width: 100%;
+}
+
+
+::ng-deep .mat-icon {
+  font-size: 20px;
+}

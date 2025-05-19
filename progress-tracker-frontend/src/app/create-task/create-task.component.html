@@ -1,0 +1,81 @@
+<!-- Container to center the card -->
+<div 
+  class="container" 
+  style="display: flex; justify-content: center; align-items: flex-start; margin-top: 40px;"
+>
+  <!-- Material Card -->
+  <mat-card style="width: 600px;">
+    <mat-card-title style="text-align: center; margin-bottom: 2%;margin-top: 2%;">Create Task</mat-card-title>
+    
+    <mat-card-content>
+      <!-- Reactive form -->
+      <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+
+        <!-- Title -->
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" />
+        </mat-form-field>
+      
+        <!-- Description -->
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="description" />
+        </mat-form-field>
+      
+        <!-- Due Date: Angular Material Datepicker -->
+        <mat-form-field>
+            <mat-label>Due date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dueDate">
+            <mat-hint>DD/MM/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+      
+        <!-- Status: Dropdown -->
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" >
+            <mat-option value="On Hold">On Hold</mat-option>
+            <mat-option value="In Progress" selected>In Progress</mat-option>
+            <mat-option value="Completed">Completed</mat-option>
+          </mat-select>
+        </mat-form-field>
+      
+        <!-- Progress Percentage: Slider -->
+        <div style="margin: 10px 0;">
+          <label>Progress</label>
+          <mat-slider
+            style="margin-left: 5%;"
+            min="0"
+            max="100"
+            step="1"
+            showTickMarks
+            discrete
+            thumbLabel
+          >
+            <!-- Using the optional new Angular Material slider thumb input (Angular v16+) -->
+            <input matSliderThumb formControlName="progressPercentage"/>
+          </mat-slider>
+        </div>
+      
+        <!-- Assigned To User: Dropdown -->
+        <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Assigned to user</mat-label>
+            <mat-select formControlName="assignedToUserId">
+              <mat-option *ngFor="let user of userList" [value]="user.id">
+                {{ user.email }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+      </form>
+    </mat-card-content>
+    
+    <!-- Example action area for a submit button -->
+    <mat-card-actions>
+      <button mat-raised-button color="primary"  style= "margin-left:40%" (click)="onSubmit()" >
+        Create Task
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

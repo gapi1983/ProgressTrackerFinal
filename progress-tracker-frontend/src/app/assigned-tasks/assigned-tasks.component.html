@@ -1,0 +1,123 @@
+<!-- assigned‑tasks.component.html -->
+<div class="task-container">
+  <mat-card
+    *ngFor="let task of tasks"
+    class="task-card"
+    (click)="onTaskClick(task)"
+  >
+    <div class="task-header">
+      <span class="task-title">{{ task.title }}</span>
+      <span class="task-progress">{{ task.progressPercentage }}%</span>
+    </div>
+
+    <mat-progress-bar
+      mode="determinate"
+      [value]="task.progressPercentage"
+    ></mat-progress-bar>
+
+    <div class="task-status">Status: {{ task.status }}</div>
+
+    <button
+      *ngIf="canDelete()"
+      mat-icon-button
+      color="warn"
+      class="delete-button"
+      (click)="deleteTask(task.taskId); $event.stopPropagation()"
+      aria-label="Delete Task"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card>
+</div>
+
+<!-- Modal Overlay -->
+<div class="modal-backdrop" *ngIf="isModalOpen">
+  <div class="modal-card" [ngClass]="{ 'expanded-layout': showComments }">
+
+    <!-- Edit Form -->
+    <div class="form-section">
+      <h2>Edit Task</h2>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="selectedTask.title" [readonly]="isEmployee"  />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          rows="3"
+          [(ngModel)]="selectedTask.description"
+          [readonly]="isEmployee" 
+        ></textarea>
+      </mat-form-field>
+
+      <ng-container *ngIf="isEmployee; else editStatus">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Status</mat-label>
+          <input matInput [value]="selectedTask.status" readonly />
+        </mat-form-field>
+      </ng-container>
+      <ng-template #editStatus>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="selectedTask.status">
+            <mat-option value="Pending">Pending</mat-option>
+            <mat-option value="In Progress">In Progress</mat-option>
+            <mat-option value="Completed">Completed</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-template>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Progress (%)</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="selectedTask.progressPercentage"
+          [readonly]="isEmployee" 
+        />
+      </mat-form-field>
+
+      <div class="modal-actions">
+        <button mat-stroked-button (click)="closeModal()">Cancel</button>
+        <button mat-flat-button color="primary" (click)="updateTask()" *ngIf="!isEmployee">
+          Save
+        </button>
+        <button mat-button color="accent" (click)="toggleComments()">
+          {{ showComments ? 'Hide Comments' : 'Comments' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comment-section" *ngIf="showComments">
+      <h3>Comments</h3>
+
+      <div class="comment-list">
+        <div class="comment-item" *ngFor="let comment of comments">
+          <strong >{{ comment.userName }}</strong>
+          <small style="margin-left:33%">{{ comment.createdAt | date: 'short' }}</small>
+          <hr />
+          <p>{{ comment.content }}
+        </div>
+      </div>
+
+      <div class="comment-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Add a comment</mat-label>
+          <textarea matInput rows="2" [(ngModel)]="newComment"></textarea>
+        </mat-form-field>
+        <button 
+          mat-flat-button
+          color="primary"
+          (click)="submitComment()"
+
+        >
+          Post
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
